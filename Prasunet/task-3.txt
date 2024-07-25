@@ -1,0 +1,54 @@
+import re
+
+def assess_password_strength(password):
+    score = 0
+    feedback = []
+
+    length = len(password)
+    if length < 8:
+        feedback.append("Password should be at least 8 characters long.")
+    elif length < 12:
+        score += 1
+        feedback.append("Password length is decent.")
+    else:
+        score += 2
+        feedback.append("Password length is good.")
+
+    if re.search(r'[A-Z]', password):
+        score += 1
+    else:
+        feedback.append("Password should contain at least one uppercase letter.")
+
+    if re.search(r'[a-z]', password):
+        score += 1
+    else:
+        feedback.append("Password should contain at least one lowercase letter.")
+
+    if re.search(r'\d', password):
+        score += 1
+    else:
+        feedback.append("Password should contain at least one digit (0-9).")
+
+    if re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        score += 2
+    else:
+        feedback.append("Password should contain at least one special character (!@#$%^&*(),.?\":{}|<>).")
+
+    if score <= 2:
+        strength = "Weak"
+    elif score <= 4:
+        strength = "Moderate"
+    elif score <= 6:
+        strength = "Strong"
+    else:
+        strength = "Very Strong"
+
+    feedback_message = f"Password Strength: {strength}\n"
+    feedback_message += "\n".join(feedback)
+
+    return feedback_message
+
+if __name__ == '__main__':
+    password = input("Enter your password: ")
+    strength_feedback = assess_password_strength(password)
+    print("\n" + strength_feedback)
